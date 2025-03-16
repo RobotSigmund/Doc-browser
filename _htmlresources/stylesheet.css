@@ -1,0 +1,115 @@
+/* Basic styling */
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+}
+
+/* Header styling */
+#header {
+	background-color: #333;
+	color: #fff;
+	padding: 10px;
+	padding-left: 60px;
+	text-align: left;
+}
+
+/* Container styling */
+#container {
+	display: flex;
+	flex: 1;
+	overflow: hidden;
+}
+
+/* Sidebar styling */
+#sidebar {
+	width: 350px;
+	padding: 10px;
+	border-right: 1px solid #ddd;
+	overflow-y: auto;
+}
+
+/* Top-bar styling for search and buttons on one row */
+#top-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Add space between elements */
+    margin-bottom: 10px;
+}
+
+/* Search field styling */
+#search-input {
+    flex: 1; /* Make the search field expand to fill available space */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#search-results {
+	list-style-type: none;
+	padding: 5px;
+	margin: 5px 0;
+	border: 2px solid #888;
+	max-height: 200px;
+	overflow-y: auto;
+	position: absolute;
+	display: none;
+	background-color: #fff;
+	z-index: 1000;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);	
+}
+
+#search-results li::before {
+    content: "📄"; /* Replace with your preferred option */
+    margin-right: 5px;
+    color: #007bff; /* Optional */
+}
+
+/* Main content area styling */
+#main {
+	flex: 1;
+	padding: 10px;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+/* iframe styling for preview */
+iframe {
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+
+/* Buttons styling */
+.control-btn {
+    padding: 5px 10px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.control-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Open file button styling */
+#open-file-btn {
+	align-self: flex-start;
+    padding: 5px 10px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+#open-file-btn:hover {
+    background-color: #0056b3;
+}
+

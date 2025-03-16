@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>%project_title%</title>
+    <!-- Link to jsTree CSS -->
+	<link rel="stylesheet" href="%jstree_theme_location%" />
+    <!-- Link to custom CSS -->
+	<link rel="stylesheet" type="text/css" href="_htmlresources/stylesheet.css">
+	<!-- Link to fuse.js -->
+	<script src="%fuse_location%"></script>
+</head>
+<body>
+
+    <!-- Header with title and version -->
+    <div id="header">
+        <h1>%project_title%</h1>
+        <p><i>Version %datetime% &bull; Documentation browser version %generator_version%</i></p>
+    </div>
+	
+    <!-- Main container holding sidebar and main content area -->
+    <div id="container">
+        
+        <!-- Sidebar with controls and jsTree for file navigation -->
+        <div id="sidebar">
+			<div id="search">
+				<input type="text" id="search-input" placeholder="Search files..." />
+                <button class="control-btn" id="expand-all">Expand</button>
+                <button class="control-btn" id="collapse-all">Collapse</button>
+			</div>
+			<ul id="search-results">
+				<!-- Search results will be populated here -->
+			</ul>
+            <div id="folder-tree"></div>
+        </div>
+        
+        <!-- Main content area with open file button and iframe for previewing files -->
+        <div id="main">
+            <a id="open-file-btn" href="" target="_blank" download>Open File</a>
+            <iframe id="file-preview" src="" title="File Preview"></iframe>
+        </div>
+        
+    </div>
+
+    <!-- Link to jQuery -->
+    <script src="%jquery_location%"></script>
+
+    <!-- Link to jsTree -->
+    <script src="%jstree_location%"></script>
+
+    <script>
+        // Folder structure data in JSON format with links to documents
+        const folderData = [
+%folderData%
+        ];
+
+        // Initialize jsTree
+        $(document).ready(function() {
+            $('#folder-tree').jstree({
+                'core': {
+                    'data': folderData
+                }
+            });
+
+            // Expand All and Collapse All button functionality
+            $('#expand-all').on('click', function() {
+                $('#folder-tree').jstree('open_all');
+            });
+
+            $('#collapse-all').on('click', function() {
+                $('#folder-tree').jstree('close_all');
+				$('#folder-tree').jstree('open_node', 'id0');
+            });
+			
+			$('#folder-tree').on('ready.jstree', function () {
+				$('#folder-tree').jstree('open_node', 'id0');
+                $('#file-preview').attr('src', '_htmlresources/index.html');
+				$('#open-file-btn')
+					.attr('href', '')           // Clear href
+					.removeAttr('download')     // Remove download attribute
+					.text("No file available")  // Update the button text
+					.prop('disabled', true);    // Disable the button
+			});
+
+            // File selection event handler
+            $('#folder-tree').on("select_node.jstree", function (e, data) {
+                const href = data.node.a_attr.href;
+                if (href && href !== "#" && href.trim() !== "") {
+                    // Update the iframe preview and "Open File" button with the file link
+                    $('#file-preview').attr('src', href);
+                    $('#open-file-btn')
+						.attr('href', href)        // Set href to the valid file
+						.removeAttr('download')    // Remove the download attribute
+						.text("Open File")         // Set the text to "Open File"
+						.prop('disabled', false);  // Enable the button
+                } else {
+                    // Clear the iframe and disable the Open File button if no file is selected
+                    $('#file-preview').attr('src', '');
+                    $('#open-file-btn')
+						.attr('href', '')           // Clear href
+						.removeAttr('download')     // Remove download attribute
+						.text("No file available")  // Update the button text
+						.prop('disabled', true);    // Disable the button
+                }
+            });
+        });
+		
+		const fileData = [
+%fileData%
+			];
+			
+		const fuseOptions = {
+			keys: ['name', 'text'], // Search based on the 'name' field
+			threshold: 0.3, // Adjust the fuzzy matching threshold
+			includeScore: true // Optional: Include match scores for better sorting
+		};
+		const fuse = new Fuse(fileData, fuseOptions);
+			
+		
+		document.getElementById('search-input').addEventListener('input', function () {
+			const query = this.value.trim();
+			const resultsContainer = document.getElementById('search-results');
+			resultsContainer.innerHTML = ''; // Clear previous results
+
+			if (query === '') {
+				resultsContainer.style.display = 'none';
+				return;
+			}
+
+			const results = fuse.search(query).slice(0, 10); // Limit to 10 results
+
+			if (results.length > 0) {
+				results.forEach(result => {
+					const li = document.createElement('li');
+					li.textContent = `${result.item.name}`;
+					li.style.cursor = 'pointer';
+					li.addEventListener('click', function () {
+						openNodeFromSearch(result.item.id);
+					});
+					resultsContainer.appendChild(li);
+				});
+				resultsContainer.style.display = 'block';
+			} else {
+				resultsContainer.style.display = 'none';
+			}
+		});
+		
+		function openNodeFromSearch(nodeId) {
+			// Assuming jsTree is initialized on #folder-tree
+			$('#folder-tree').jstree('deselect_all');
+			$('#folder-tree').jstree('open_node', nodeId);
+			$('#folder-tree').jstree('select_node', nodeId);
+
+			// Optionally, you can also update the iframe preview or "Open File" button:
+			const file = fileData.find(item => item.id === nodeId);
+			if (file) {
+				$('#preview-iframe').attr('src', file.text);
+				$('#open-file-btn').attr('href', file.text).text('Open File');
+			}
+
+			// Hide search results
+			document.getElementById('search-results').style.display = 'none';
+		}
+
+
+    </script>
+
+</body>
+</html>
