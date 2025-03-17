@@ -7,12 +7,11 @@ Example:
 
 # Setup
 
-Download or clone the repository.
+1. Download or clone the repository.
 
-Navigate to the folder "_htmlresources" and run the script "Download_dependencies.bat". This will auto download the necessary external javascript files.
+2. Navigate to the folder ``_htmlresources`` and run the script ``Download_dependencies.bat``. This will auto download the necessary external javascript files.
 
-Copy the folder "_htmlresources" into the same folder your documentation files are located. The folderstructure should look like this:
-
+3. Copy the folder ``_htmlresources`` into the same folder your documentation files are located. *Everything you need is now in this folder.* **You ONLY need this folder!** The folderstructure should look like this:
 ```
 ----ProjectNr Customer Project-name Documentation package
     |---_htmlresources
