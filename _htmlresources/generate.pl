@@ -268,7 +268,7 @@ sub GenerateFuseJson {
 
 
 sub GenerateVersionHeader {
-	return '<head>' . "\n" . '<!--' . "\n\n" . 'Doc browser by SS' . "\n\n" . '-->' . "\n";
+	return '<head>' . "\n" . '<!--' . "\n\n" . 'Doc browser by SS - https://github.com/RobotSigmund/Doc-browser' . "\n\n" . '-->' . "\n";
 }
 
 
