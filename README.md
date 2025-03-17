@@ -43,3 +43,21 @@ Generate new documentation package index file by running the script ``_htmlresou
 # Additional info
 
 If there are files missing, you will get a listing of these on the splash index page. If you want to ignore these warnings, just delete the ``_htmlresources\warning_if_missing.cfg`` file.
+
+# Acknowledgments
+
+This project uses code from the following external repositories:
+
+- **[jQuery](https://github.com/jquery)**  
+  - Description: jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers.  
+  - License: [MIT License](https://github.com/jquery/jquery/blob/main/LICENSE.txt)
+
+- **[jstree](https://github.com/vakata/jstree)**  
+  - Description: jsTree is jquery plugin, that provides interactive file/folder trees.  
+  - License: [MIT License](https://github.com/vakata/jstree/blob/master/LICENSE-MIT)
+
+- **[Fuse.js](https://github.com/krisk/fuse)**  
+  - Description: Fuse.js is a lightweight fuzzy-search, in JavaScript, with zero dependencies.  
+  - License: [Apache License 2.0](https://github.com/krisk/Fuse/blob/main/LICENSE)
+
+
