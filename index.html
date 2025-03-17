@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+
+Doc browser rev. 2025-03-16 - https://github.com/RobotSigmund/Doc-browser
+
+-->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P00000 CustomerName ProjectName Documentation package</title>
+    <!-- Link to jsTree CSS -->
+	<link rel="stylesheet" href="_htmlresources/jstree/themes/default/style.min.css" />
+    <!-- Link to custom CSS -->
+	<link rel="stylesheet" type="text/css" href="_htmlresources/stylesheet.css">
+	<!-- Link to fuse.js -->
+	<script src="_htmlresources/fuse.js/fuse.min.js"></script>
+</head>
+<body>
+
+    <!-- Header with title and version -->
+    <div id="header">
+        <h1>P00000 CustomerName ProjectName Documentation package</h1>
+        <p><i>Version 2025-03-17 13:30:22 &bull; Documentation browser version 2025-03-16</i></p>
+    </div>
+	
+    <!-- Main container holding sidebar and main content area -->
+    <div id="container">
+        
+        <!-- Sidebar with controls and jsTree for file navigation -->
+        <div id="sidebar">
+			<div id="search">
+				<input type="text" id="search-input" placeholder="Search files..." />
+                <button class="control-btn" id="expand-all">Expand</button>
+                <button class="control-btn" id="collapse-all">Collapse</button>
+			</div>
+			<ul id="search-results">
+				<!-- Search results will be populated here -->
+			</ul>
+            <div id="folder-tree"></div>
+        </div>
+        
+        <!-- Main content area with open file button and iframe for previewing files -->
+        <div id="main">
+            <a id="open-file-btn" href="" target="_blank" download>Open File</a>
+            <iframe id="file-preview" src="" title="File Preview"></iframe>
+        </div>
+        
+    </div>
+
+    <!-- Link to jQuery -->
+    <script src="_htmlresources/jquery/jquery-latest.min.js"></script>
+
+    <!-- Link to jsTree -->
+    <script src="_htmlresources/jstree/jstree.min.js"></script>
+
+    <script>
+        // Folder structure data in JSON format with links to documents
+        const folderData = [
+{ "id": "id0", "parent": "#", "text": "Docs", "icon": "jstree-folder" }, 
+{ "id": "id1", "parent": "id0", "text": "01_Administration", "icon": "jstree-folder" },
+{ "id": "id2", "parent": "id1", "text": "Contracts.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/01_Administration/Contracts.pdf" } },
+{ "id": "id3", "parent": "id1", "text": "Correspondence.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/01_Administration/Correspondence.pdf" } },
+{ "id": "id4", "parent": "id1", "text": "Licenses.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/01_Administration/Licenses.pdf" } },
+{ "id": "id5", "parent": "id0", "text": "02_Specifications", "icon": "jstree-folder" },
+{ "id": "id6", "parent": "id5", "text": "Design_Criteria.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/02_Specifications/Design_Criteria.pdf" } },
+{ "id": "id7", "parent": "id5", "text": "Performance_Data.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/02_Specifications/Performance_Data.pdf" } },
+{ "id": "id8", "parent": "id5", "text": "Technical_Specifications.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/02_Specifications/Technical_Specifications.pdf" } },
+{ "id": "id9", "parent": "id0", "text": "03_Design_Documents", "icon": "jstree-folder" },
+{ "id": "id10", "parent": "id9", "text": "CAD_Drawings.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/03_Design_Documents/CAD_Drawings.pdf" } },
+{ "id": "id11", "parent": "id9", "text": "Layouts.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/03_Design_Documents/Layouts.pdf" } },
+{ "id": "id12", "parent": "id9", "text": "Schematics.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/03_Design_Documents/Schematics.pdf" } },
+{ "id": "id13", "parent": "id0", "text": "04_Safety", "icon": "jstree-folder" },
+{ "id": "id14", "parent": "id13", "text": "Compliance_Certificates.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/04_Safety/Compliance_Certificates.pdf" } },
+{ "id": "id15", "parent": "id13", "text": "Risk_Assessment.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/04_Safety/Risk_Assessment.pdf" } },
+{ "id": "id16", "parent": "id13", "text": "Safety_Protocols.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/04_Safety/Safety_Protocols.pdf" } },
+{ "id": "id17", "parent": "id0", "text": "05_Installation", "icon": "jstree-folder" },
+{ "id": "id18", "parent": "id17", "text": "Checklist.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/05_Installation/Checklist.pdf" } },
+{ "id": "id19", "parent": "id17", "text": "Installation_Guide.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/05_Installation/Installation_Guide.pdf" } },
+{ "id": "id20", "parent": "id17", "text": "Setup_Procedures.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/05_Installation/Setup_Procedures.pdf" } },
+{ "id": "id21", "parent": "id0", "text": "06_Operation", "icon": "jstree-folder" },
+{ "id": "id22", "parent": "id21", "text": "Operating_Procedures.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/06_Operation/Operating_Procedures.pdf" } },
+{ "id": "id23", "parent": "id21", "text": "Training_Materials.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/06_Operation/Training_Materials.pdf" } },
+{ "id": "id24", "parent": "id21", "text": "User_Manual.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/06_Operation/User_Manual.pdf" } },
+{ "id": "id25", "parent": "id0", "text": "07_Maintenance", "icon": "jstree-folder" },
+{ "id": "id26", "parent": "id25", "text": "Maintenance_Schedule.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/07_Maintenance/Maintenance_Schedule.pdf" } },
+{ "id": "id27", "parent": "id25", "text": "Service_Records.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/07_Maintenance/Service_Records.pdf" } },
+{ "id": "id28", "parent": "id25", "text": "Troubleshooting_Guide.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/07_Maintenance/Troubleshooting_Guide.pdf" } },
+{ "id": "id29", "parent": "id0", "text": "08_Quality_Assurance", "icon": "jstree-folder" },
+{ "id": "id30", "parent": "id29", "text": "Inspection_Reports.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/08_Quality_Assurance/Inspection_Reports.pdf" } },
+{ "id": "id31", "parent": "id29", "text": "Quality_Certifications.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/08_Quality_Assurance/Quality_Certifications.pdf" } },
+{ "id": "id32", "parent": "id29", "text": "Test_Results.pdf", "icon": "jstree-file", "a_attr": { "href": "Docs/08_Quality_Assurance/Test_Results.pdf" } }
+        ];
+
+        // Initialize jsTree
+        $(document).ready(function() {
+            $('#folder-tree').jstree({
+                'core': {
+                    'data': folderData
+                }
+            });
+
+            // Expand All and Collapse All button functionality
+            $('#expand-all').on('click', function() {
+                $('#folder-tree').jstree('open_all');
+            });
+
+            $('#collapse-all').on('click', function() {
+                $('#folder-tree').jstree('close_all');
+				$('#folder-tree').jstree('open_node', 'id0');
+            });
+			
+			$('#folder-tree').on('ready.jstree', function () {
+				$('#folder-tree').jstree('open_node', 'id0');
+                $('#file-preview').attr('src', '_htmlresources/index.html');
+				$('#open-file-btn')
+					.attr('href', '')           // Clear href
+					.removeAttr('download')     // Remove download attribute
+					.text("No file available")  // Update the button text
+					.prop('disabled', true);    // Disable the button
+			});
+
+            // File selection event handler
+            $('#folder-tree').on("select_node.jstree", function (e, data) {
+                const href = data.node.a_attr.href;
+                if (href && href !== "#" && href.trim() !== "") {
+                    // Update the iframe preview and "Open File" button with the file link
+                    $('#file-preview').attr('src', href);
+                    $('#open-file-btn')
+						.attr('href', href)        // Set href to the valid file
+						.removeAttr('download')    // Remove the download attribute
+						.text("Open File")         // Set the text to "Open File"
+						.prop('disabled', false);  // Enable the button
+                } else {
+                    // Clear the iframe and disable the Open File button if no file is selected
+                    $('#file-preview').attr('src', '');
+                    $('#open-file-btn')
+						.attr('href', '')           // Clear href
+						.removeAttr('download')     // Remove download attribute
+						.text("No file available")  // Update the button text
+						.prop('disabled', true);    // Disable the button
+                }
+            });
+        });
+		
+		const fileData = [
+{ id: "id2", name: "Contracts.pdf", text: "../Docs/01_Administration/Contracts.pdf" },
+{ id: "id3", name: "Correspondence.pdf", text: "../Docs/01_Administration/Correspondence.pdf" },
+{ id: "id4", name: "Licenses.pdf", text: "../Docs/01_Administration/Licenses.pdf" },
+{ id: "id6", name: "Design_Criteria.pdf", text: "../Docs/02_Specifications/Design_Criteria.pdf" },
+{ id: "id7", name: "Performance_Data.pdf", text: "../Docs/02_Specifications/Performance_Data.pdf" },
+{ id: "id8", name: "Technical_Specifications.pdf", text: "../Docs/02_Specifications/Technical_Specifications.pdf" },
+{ id: "id10", name: "CAD_Drawings.pdf", text: "../Docs/03_Design_Documents/CAD_Drawings.pdf" },
+{ id: "id11", name: "Layouts.pdf", text: "../Docs/03_Design_Documents/Layouts.pdf" },
+{ id: "id12", name: "Schematics.pdf", text: "../Docs/03_Design_Documents/Schematics.pdf" },
+{ id: "id14", name: "Compliance_Certificates.pdf", text: "../Docs/04_Safety/Compliance_Certificates.pdf" },
+{ id: "id15", name: "Risk_Assessment.pdf", text: "../Docs/04_Safety/Risk_Assessment.pdf" },
+{ id: "id16", name: "Safety_Protocols.pdf", text: "../Docs/04_Safety/Safety_Protocols.pdf" },
+{ id: "id18", name: "Checklist.pdf", text: "../Docs/05_Installation/Checklist.pdf" },
+{ id: "id19", name: "Installation_Guide.pdf", text: "../Docs/05_Installation/Installation_Guide.pdf" },
+{ id: "id20", name: "Setup_Procedures.pdf", text: "../Docs/05_Installation/Setup_Procedures.pdf" },
+{ id: "id22", name: "Operating_Procedures.pdf", text: "../Docs/06_Operation/Operating_Procedures.pdf" },
+{ id: "id23", name: "Training_Materials.pdf", text: "../Docs/06_Operation/Training_Materials.pdf" },
+{ id: "id24", name: "User_Manual.pdf", text: "../Docs/06_Operation/User_Manual.pdf" },
+{ id: "id26", name: "Maintenance_Schedule.pdf", text: "../Docs/07_Maintenance/Maintenance_Schedule.pdf" },
+{ id: "id27", name: "Service_Records.pdf", text: "../Docs/07_Maintenance/Service_Records.pdf" },
+{ id: "id28", name: "Troubleshooting_Guide.pdf", text: "../Docs/07_Maintenance/Troubleshooting_Guide.pdf" },
+{ id: "id30", name: "Inspection_Reports.pdf", text: "../Docs/08_Quality_Assurance/Inspection_Reports.pdf" },
+{ id: "id31", name: "Quality_Certifications.pdf", text: "../Docs/08_Quality_Assurance/Quality_Certifications.pdf" },
+{ id: "id32", name: "Test_Results.pdf", text: "../Docs/08_Quality_Assurance/Test_Results.pdf" }
+			];
+			
+		const fuseOptions = {
+			keys: ['name', 'text'], // Search based on the 'name' field
+			threshold: 0.3, // Adjust the fuzzy matching threshold
+			includeScore: true // Optional: Include match scores for better sorting
+		};
+		const fuse = new Fuse(fileData, fuseOptions);
+			
+		
+		document.getElementById('search-input').addEventListener('input', function () {
+			const query = this.value.trim();
+			const resultsContainer = document.getElementById('search-results');
+			resultsContainer.innerHTML = ''; // Clear previous results
+
+			if (query === '') {
+				resultsContainer.style.display = 'none';
+				return;
+			}
+
+			const results = fuse.search(query).slice(0, 10); // Limit to 10 results
+
+			if (results.length > 0) {
+				results.forEach(result => {
+					const li = document.createElement('li');
+					li.textContent = `${result.item.name}`;
+					li.style.cursor = 'pointer';
+					li.addEventListener('click', function () {
+						openNodeFromSearch(result.item.id);
+					});
+					resultsContainer.appendChild(li);
+				});
+				resultsContainer.style.display = 'block';
+			} else {
+				resultsContainer.style.display = 'none';
+			}
+		});
+		
+		function openNodeFromSearch(nodeId) {
+			// Assuming jsTree is initialized on #folder-tree
+			$('#folder-tree').jstree('deselect_all');
+			$('#folder-tree').jstree('open_node', nodeId);
+			$('#folder-tree').jstree('select_node', nodeId);
+
+			// Optionally, you can also update the iframe preview or "Open File" button:
+			const file = fileData.find(item => item.id === nodeId);
+			if (file) {
+				$('#preview-iframe').attr('src', file.text);
+				$('#open-file-btn').attr('href', file.text).text('Open File');
+			}
+
+			// Hide search results
+			document.getElementById('search-results').style.display = 'none';
+		}
+
+
+    </script>
+
+</body>
+</html>

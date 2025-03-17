@@ -45,6 +45,7 @@ my $jquery_location = '_htmlresources/jquery/jquery-latest.min.js';
 
 my $fuse_location = '_htmlresources/fuse.js/fuse.min.js';
 
+my $docs_root_folder = 'Docs';
 my $generator_version = '2025-03-16';
 
 
@@ -74,7 +75,7 @@ our(@DATA) = ();
 print 'Reading data' . "\n";
 
 # Scan folder
-TraverseFolder('../Docs', 0);
+TraverseFolder('../' . $docs_root_folder, 0);
 
 # Build JSON
 print 'Building JSON' . "\n";
@@ -226,7 +227,7 @@ sub TraverseFolder {
 
 sub GenerateJstreeJson {
 	# Add a root node. All folders we find will be children of this node.
-	my $json = '{ "id": "id0", "parent": "#", "text": "Sluttdokumentasjon", "icon": "jstree-folder" }, ' . "\n";
+	my $json = '{ "id": "id0", "parent": "#", "text": "' . $docs_root_folder . '", "icon": "jstree-folder" }, ' . "\n";
 
 	foreach my $i (0..$#DATA) {
 		my($node_id, $type, $filename, $path, $parent_id) = split(/;/, $DATA[$i]);
@@ -268,7 +269,7 @@ sub GenerateFuseJson {
 
 
 sub GenerateVersionHeader {
-	return '<head>' . "\n" . '<!--' . "\n\n" . 'Doc browser by SS - https://github.com/RobotSigmund/Doc-browser' . "\n\n" . '-->' . "\n";
+	return '<head>' . "\n" . '<!--' . "\n\n" . 'Doc browser rev. ' . $generator_version . ' - https://github.com/RobotSigmund/Doc-browser' . "\n\n" . '-->' . "\n";
 }
 
 
